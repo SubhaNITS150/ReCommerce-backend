@@ -5,6 +5,7 @@ import docsRoute from './docs.route';
 import itemRoute from './item.route';
 import locationRoute from './location.route';
 import categoryRoute from './category.route';
+import modelRoute from './mlModel.route';
 import config from '../../config/config';
 
 const router = express.Router();
@@ -29,6 +30,10 @@ const defaultRoutes = [
   {
     path: '/category',
     route: categoryRoute
+  },
+  {
+    path: '/model',
+    route: modelRoute
   }
 ];
 
