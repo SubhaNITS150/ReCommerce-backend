@@ -14,6 +14,7 @@ const createItem = catchAsync(async (req, res) => {
 });
 
 const uploadItemImage = catchAsync(async (req, res) => {
+  console.log(req.file);
   const { itemId } = req.params;
   const { modelId } = req.body;
 
@@ -24,6 +25,11 @@ const uploadItemImage = catchAsync(async (req, res) => {
   ).file;
   const result = await itemUploadService.uploadAndInspectItem(itemId, modelId, file.path);
   res.status(httpStatus.CREATED).send(result);
+});
+
+const getItems = catchAsync(async (req, res) => {
+  const items = await itemService.getAllItemsWithImages();
+  res.status(httpStatus.OK).send(items);
 });
 
 const testCloudinaryUpload = catchAsync(
@@ -43,5 +49,6 @@ const testCloudinaryUpload = catchAsync(
 export default {
   createItem,
   uploadItemImage,
-  testCloudinaryUpload
+  testCloudinaryUpload,
+  getItems
 };

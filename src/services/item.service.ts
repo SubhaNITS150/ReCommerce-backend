@@ -22,6 +22,21 @@ const createItem = async (itemBody: CreateItemInput): Promise<Item> => {
   });
 };
 
+const getAllItemsWithImages = async () => {
+  return prisma.item.findMany({
+    include: {
+      images: true,             // Fetches all matching ItemImage rows using the foreign key relationship
+      category: true,           // Optional: include if you want category names
+      location: true,           // Optional: include if you want city/state data
+      currentInspection: true   // Optional: include if you want to display the grading score
+    },
+    orderBy: {
+      createdAt: 'desc'         // Show most recently added items first
+    }
+  });
+};
+
 export default {
-  createItem
+  createItem,
+  getAllItemsWithImages
 };

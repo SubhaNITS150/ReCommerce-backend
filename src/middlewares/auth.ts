@@ -13,17 +13,33 @@ const verifyCallback =
     requiredRights: string[]
   ) =>
   async (err: unknown, user: User | false, info: unknown) => {
+    console.log('ERR:', err);
+    console.log('INFO:', info);
+    console.log('USER:', user);
+    console.log('REQUIRED RIGHTS:', requiredRights);
+
     if (err || info || !user) {
+      console.log('AUTH FAILED HERE');
       return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'));
     }
+
     req.user = user;
+
+    console.log('AUTH PASSED');
 
     if (requiredRights.length) {
       const userRights = roleRights.get(user.role) ?? [];
+
+      console.log('USER RIGHTS:', userRights);
+
       const hasRequiredRights = requiredRights.every((requiredRight) =>
         userRights.includes(requiredRight)
       );
-      if (!hasRequiredRights && req.params.userId !== user.id) {
+
+      console.log('HAS RIGHTS:', hasRequiredRights);
+
+      if (!hasRequiredRights && Number(req.params.userId) !== user.id) {
+        console.log('FORBIDDEN HERE');
         return reject(new ApiError(httpStatus.FORBIDDEN, 'Forbidden'));
       }
     }

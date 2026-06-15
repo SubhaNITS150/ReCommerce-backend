@@ -40,6 +40,9 @@ model UserProfile {
   userId Int  @unique
   user   User @relation(fields: [userId], references: [id])
 
+  latitude     Float
+  longitude    Float
+
   greenCredits Int @default(0)
 
   createdAt DateTime @default(now())
@@ -284,6 +287,7 @@ model MarketplaceListing {
   updatedAt DateTime @updatedAt
 
   offers PurchaseOffer[]
+  orders Order[]
 
   @@index([status])
   @@index([listingPrice])
@@ -339,6 +343,9 @@ model PurchaseOffer {
 model Order {
   id String @id @default(cuid())
 
+  listingId String
+  listing   MarketplaceListing @relation(fields: [listingId], references: [id])
+
   itemId String
   item   Item   @relation(fields: [itemId], references: [id])
 
@@ -349,8 +356,7 @@ model Order {
 
   status OrderStatus
 
-  createdAt DateTime @default(now())
-
+  @@index([listingId])
   @@index([buyerId])
   @@index([itemId])
 }
